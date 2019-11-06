@@ -1,23 +1,25 @@
 const dBase = require('../data/db-config.js');
 
 module.exports = {
-    get,
-    getById,
-    getSteps,
+    find,
+    findById,
+    findSteps,
     add,
-    revise,
+    update,
     remove
 };
 
-function get() {
+function find() {
     return dBase('schemes');
 }
 
-function getById() {
-    return dBase('schemes').where({id});
+function findById(id) {
+    return dBase('schemes')
+    .where({id})
+    .first();
 }
 
-function getSteps() {
+function findSteps(id) {
     return dBase('steps as st')
         .join('schemes as sc', 'sc.id', '=', 'st.scheme_id')
         .where({scheme_id: id})
@@ -28,14 +30,14 @@ function add(scheme) {
     return dBase('schemes').insert(scheme);
 }
 
-function revise(modify, id) {
+function update(modify, id) {
     return dBase('schemes')
     .update(modify)
     .where({id});
 }
 
 function remove(id) {
-    return('schemes')
+    return dBase('schemes')
     .del()
     .where({id});
 }
